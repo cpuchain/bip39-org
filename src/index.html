@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BIP39 - Create Mnemonic Codes With Email and Password Combination</title>
+    <meta name="description" content="A tool to create a secure BIP39 Mnemonic phrases from the combination of ID and Password">
+    <meta name="keywords" content="bip39, mnemonic, phrase, bip-39, wordlist, bitcoin, ethereum, crypto, webcrypto, brainwallet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap-icons.embedded.css" rel="stylesheet">
+    <style>
+    @media (min-width: 1200px) {
+      .container {
+        width: 1170px;
+      }
+    }
+    @media (min-width: 768px) {
+      .navbar-mobile {
+        display: none !important;
+      }
+    }
+    .navbar-mobile {
+      flex-basis: 100%;
+      flex-grow: 1;
+      align-items: center;
+    }
+    hr {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    h1, .h1 {
+      font-size: 36px;
+    }
+    h1, .h1, h2, .h2, h3, .h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+      font-family: inherit;
+      font-weight: 450;
+      line-height: 1.1;
+      color: inherit;
+    }
+    .form-control {
+      height: 40px;
+    }
+    .mnemonic {
+      height: 65px;
+    }
+    .encrypt {
+      height: 110px;
+    }
+    .error {
+      color: #a33;
+      font-size: 1.5rem;
+    }
+    .warning {
+      display: inline-block;
+      color: #a33;
+      font-size: 1.1rem;
+      padding-bottom: 1rem;
+    }
+    .qrcode {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hide {
+      display: none;
+    }
+    .invisible {
+      visibility: hidden;
+    }
+    .generated {
+      display: none;
+    }
+    input[type=number]::-webkit-inner-spin-button {
+      opacity: 1
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="py-3 mb-3 border-bottom">
+        <nav class="navbar navbar-expand-md">
+          <a onclick="nav('main')" href="#" class="navbar-brand me-md-auto">
+            <span class="fs-4">Mnemonic Generator</span>
+          </a>
+
+          <!-- Desktop Navbar -->
+          <ul class="nav nav-pills">
+            <li class="nav-item d-none d-md-block">
+              <a id="nav-main" onclick="nav('main')" href="#" class="nav-link active">Email</a>
+            </li>
+            <li class="nav-item d-none d-md-block">
+              <a id="nav-mnemonic" onclick="nav('mnemonic')" href="#mnemonic" class="nav-link">Mnemonic</a>
+            </li>
+            <li class="nav-item d-none d-md-block">
+              <a id="nav-encrypt" onclick="nav('encrypt')" href="#encrypt" class="nav-link">Encrypt</a>
+            </li>
+            <li class="nav-item d-none d-md-block">
+              <a onclick="settings()" class="nav-link"><i class="bi bi-gear-fill"></i></a>
+            </li>
+          </ul>
+
+          <!--
+            Mobile Navbar Collapse Button
+            https://getbootstrap.com/docs/5.3/components/navbar/#external-content
+          -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarToggleExternalContent"
+            aria-controls="navbarToggleExternalContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Mobile Navbar -->
+          <div class="navbar-mobile collapse" id="navbarToggleExternalContent">
+            <ul class="navbar-nav me-auto mt-3 mb-2 mb-lg-0">
+              <li class="nav-item d-md-none border-top mt-2 mb-2">
+              </li>
+              <li class="nav-item d-md-none">
+                <a id="nav-mobile-main" onclick="nav('main')" href="#" class="nav-link active">Email</a>
+              </li>
+              <li class="nav-item d-md-none">
+                <a id="nav-mobile-mnemonic" onclick="nav('mnemonic')" href="#mnemonic" class="nav-link">Mnemonic</a>
+              </li>
+              <li class="nav-item d-md-none">
+                <a id="nav-mobile-encrypt" onclick="nav('encrypt')" href="#encrypt" class="nav-link">Encrypt</a>
+              </li>
+              <li class="nav-item d-md-none">
+                <a onclick="settings()" class="nav-link"><i class="bi bi-gear-fill"></i>&nbsp;Settings</a>
+              </li>
+            </ul>
+          </div>
+      </header>
+      <!-- Error Messages -->
+      <span id="error" class="error hide"></span>
+      <!-- Main Page -->
+      <div class="row" id="main">
+        <div class="col-md-12">
+          <h2>Create Mnemonic (Email)</h2>
+          <p>
+            You can generate your own <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki" target="_blank">BIP39</a> mnemonic
+            based on the email and password that you can always remember.
+            They are memorizable, easy to recover, and give you less chance of leakage to the third party from the insecure backup methods.
+          </p>
+          <p>
+            Use this generator along with
+            <a href="https://iancoleman.io/bip39/" target="_blank">BIP39 Tool</a>.
+          </p>
+          <span class="warning">Always use unique details, write them, keep them, do not share them, and <em>do not</em> lose them!</span>
+          <div class="card card-body">
+            <form id="main-form" action="javascript:void(0);">
+              <div class="mb-3">
+                <label class="form-label">Email address (Or Username)</label>
+                <div class="input-group">
+                  <input type="email" class="form-control main-form" id="main-email" name="Email Address" aria-describedby="emailHelp">
+                  <button type="button" class="btn btn-outline-secondary" onclick="paste(this)"><i class="bi bi-clipboard-fill"></i></button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Password (Must be more than 8 characters long)</label>
+                <div class="input-group">
+                  <input type="password" class="form-control main-form" id="main-password" name="Password" >
+                  <button type="button" class="btn btn-outline-secondary" onclick="show(this)"><i class="bi bi-eye-slash"></i></button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="paste(this)"><i class="bi bi-clipboard-fill"></i></button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Additional Phrases (Optional, splitted by commas)</label>
+                <div class="input-group">
+                  <input class="form-control main-form" id="main-additional" name="Additional Phrases">
+                  <button type="button" class="btn btn-outline-secondary" onclick="paste(this)"><i class="bi bi-clipboard-fill"></i></button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nonce (Optional)</label>
+                <input type="number" class="form-control main-form" id="main-nonce" name="Nonce" min="0" value="0">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Mnemonic Length (24 words by default)</label>
+                <select class="form-control form-select main-form" id="main-length" name="Mnemonic Length">
+                  <option value="" selected>24 Words (Default)</option>
+                  <option value="12">12 Words</option>
+                  <option value="15">15 Words</option>
+                  <option value="18">18 Words</option>
+                  <option value="21">21 Words</option>
+                  <option value="24">24 Words</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">BIP39 Passphrase (Optional)</label>
+                <div class="input-group">
+                  <input type="password" class="form-control main-form" id="main-passphrase" name="BIP39 Passphrase">
+                  <button type="button" class="btn btn-outline-secondary" onclick="show(this)"><i class="bi bi-eye-slash"></i></button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="paste(this)"><i class="bi bi-clipboard-fill"></i></button>
+                </div>
+              </div>
+              <div class="mb-3 generated">
+                <label class="form-label">Generated Entropy 1</label>
+                <div class="input-group">
+                  <input type="text" class="form-control main-form" id="main-entropy1" name="Entropy" disabled>
+                  <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+                </div>
+              </div>
+              <div class="mb-3 generated">
+                <label class="form-label">Generated Mnemonic 1</label>
+                <div class="input-group">
+                  <textarea class="form-control main-form mnemonic" id="main-mnemonic1" name="Mnemonic" disabled></textarea>
+                  <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+                </div>
+              </div>
+              <div class="mb-3 generated">
+                <label class="form-label">Generated BIP39 Seed 1</label>
+                <div class="input-group">
+                  <textarea class="form-control main-form mnemonic" id="main-seed1" name="BIP39 Seed" disabled></textarea>
+                  <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+                </div>
+              </div>
+              <div class="mb-3 generated">
+                <label class="form-label">Generated Entropy 2</label>
+                <div class="input-group">
+                  <input type="text" class="form-control main-form" id="main-entropy2" name="Entropy" disabled>
+                  <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+                </div>
+              </div>
+              <div class="mb-3 generated">
+                <label class="form-label">Generated Mnemonic 2</label>
+                <div class="input-group">
+                  <textarea class="form-control main-form mnemonic" id="main-mnemonic2" name="Mnemonic" disabled></textarea>
+                  <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+                </div>
+              </div>
+              <div class="mb-3 generated">
+                <label class="form-label">Generated BIP39 Seed 2</label>
+                <div class="input-group">
+                  <textarea class="form-control main-form mnemonic" id="main-seed2" name="BIP39 Seed" disabled></textarea>
+                  <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="form-text">Those information are never shared with us, so please make a secure backup for your own</div>
+              </div>
+              <button type="button" class="btn btn-primary me-1" onclick="generateMain()">Generate</button>
+              <a
+                id="main-backup"
+                download="backup.json"
+                href="data:text/plain;charset=utf-8,{}"
+                class="btn btn-primary me-1"
+                >
+                Backup
+              </a>
+              <button type="button" class="btn btn-primary me-1" onclick="importMain()">Import</button>
+              <button type="button" class="btn btn-primary me-1" onclick="clearInput(this)">Clear</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- Mnemonic Page -->
+      <div class="row hide" id="mnemonic">
+        <div class="col-md-12">
+          <h2>Create Mnemonic</h2>
+          <p>
+            You can enter an existing BIP39 mnemonic, or generate a new random one.
+            Typing your own twelve words will probably not work how you expect, since the words require a particular structure (the last word contains a checksum).
+          </p>
+          <p>
+            For more info see the
+            <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki" target="_blank">BIP39 spec</a>.
+          </p>
+        </div>
+        <div class="card card-body">
+          <form id="mnemonic-form" action="javascript:void(0);">
+            <div class="mb-3">
+              <label class="form-label">Entropy</label>
+              <div class="input-group">
+                <input type="text" class="form-control mnemonic-form" id="mnemonic-entropy" name="Entropy">
+                <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Mnemonic (3 ~ 24 words)</label>
+              <div class="input-group">
+                <textarea class="form-control mnemonic-form mnemonic" id="mnemonic-mnemonic" name="Mnemonic"></textarea>
+                <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Mnemonic Length (Default to Entropy Length or 24 words)</label>
+              <select class="form-control form-select mnemonic-form" id="mnemonic-length" name="Mnemonic Length">
+                <option value="" selected>Use Entropy Length or 24 Words</option>
+                <option value="12">12 Words</option>
+                <option value="15">15 Words</option>
+                <option value="18">18 Words</option>
+                <option value="21">21 Words</option>
+                <option value="24">24 Words</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">BIP39 Passphrase (Optional)</label>
+              <div class="input-group">
+                <input type="password" class="form-control mnemonic-form" id="mnemonic-passphrase" name="BIP39 Passphrase">
+                <button type="button" class="btn btn-outline-secondary" onclick="show(this)"><i class="bi bi-eye-slash"></i></button>
+                <button type="button" class="btn btn-outline-secondary" onclick="paste(this)"><i class="bi bi-clipboard-fill"></i></button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">BIP39 Seed</label>
+              <div class="input-group">
+                <textarea class="form-control mnemonic-form mnemonic" id="mnemonic-seed" name="BIP39 Seed" disabled></textarea>
+                <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary me-1" onclick="random()">Random</button>
+            <button type="button" class="btn btn-primary me-1" onclick="entropy()">From Entropy</button>
+            <button type="button" class="btn btn-primary me-1" onclick="mnemonic()">From Mnemonic</button>
+            <a
+              id="mnemonic-backup"
+              download="backup.json"
+              href="data:text/plain;charset=utf-8,{}"
+              class="btn btn-primary me-1"
+              >
+              Backup
+            </a>
+            <button type="button" class="btn btn-primary me-1" onclick="importMnemonic()">Import</button>
+            <button type="button" class="btn btn-primary me-1" onclick="clearInput(this)">Clear</button>
+          </form>
+        </div>
+      </div>
+      <!-- Encryption Page -->
+      <div class="row hide" id="encrypt">
+        <div class="col-md-12">
+          <h2>Encrypt / Decrypt</h2>
+          <p class="mb-0">
+            Using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API" target="_blank">WebCrypto</a> API and PBKDF2 key derivation function,
+            you can encrypt and decrypt text input using your own password.
+          </p>
+          <p>
+            ( Compatible with: openssl enc -e -aes-256-cbc -pbkdf2 -a -md SHA-512 -iter 10000 )
+          </p>
+          <p>
+            For more info see the
+            <a href="https://en.wikipedia.org/wiki/PBKDF2" target="_blank">PBKDF2 spec</a>.
+          </p>
+        </div>
+        <div class="card card-body">
+          <form id="encrypt-form" action="javascript:void(0);">
+            <div class="mb-3">
+              <label class="form-label">Plain-text:</label>
+              <div class="input-group">
+                <textarea class="form-control encrypt-form encrypt" id="encrypt-raw" name="Decrypted"></textarea>
+                <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                <button type="button" class="btn btn-outline-secondary" onclick="paste(this)"><i class="bi bi-clipboard-fill"></i></button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Encrypted:</label>
+              <div class="input-group">
+                <textarea class="form-control encrypt-form encrypt" id="encrypt-enc" name="Encrypted"></textarea>
+                <button type="button" class="btn btn-outline-secondary" onclick="qrcode(this)"><i class="bi bi-qr-code"></i></button>
+                <button type="button" class="btn btn-outline-secondary" onclick="copy(this)"><i class="bi bi-clipboard"></i></button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <div class="input-group">
+                <input type="password" class="form-control encrypt-form" id="encrypt-password" name="Password" >
+                <button type="button" class="btn btn-outline-secondary" onclick="show(this)"><i class="bi bi-eye-slash"></i></button>
+                <button type="button" class="btn btn-outline-secondary" onclick="paste(this)"><i class="bi bi-clipboard-fill"></i></button>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary me-1" onclick="encrypt()">Encrypt</button>
+            <button type="button" class="btn btn-primary me-1" onclick="decrypt()">Decrypt</button>
+            <a
+              id="encrypt-backup"
+              download="enc.txt"
+              href="data:text/plain;charset=utf-8,"
+              class="btn btn-primary me-1"
+              >
+              Download
+            </a>
+            <button type="button" class="btn btn-primary me-1" onclick="importEncrypted()">Open File</button>
+            <button type="button" class="btn btn-primary me-1" onclick="clearInput(this)">Clear</button>
+          </form>
+        </div>
+      </div>
+      <!-- Footer -->
+      <footer class="d-flex flex-wrap justify-content-between align-items-center pt-3 mt-5 mb-4 border-top">
+        <ul class="nav col-md-4">
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+          <li class="nav-item"><a href="https://github.com/bip39org/bip39-org" class="nav-link px-2 text-muted">Github</a></li>
+          <li class="nav-item"><a href="https://github.com/bip39org/bip39-org/releases" class="nav-link px-2 text-muted">Downloads</a></li>
+          <li class="nav-item"><a href="https://bip39org.eth.link" class="nav-link px-2 text-muted">Eth.link</a></li>
+        </ul>
+
+        <p id="version" class="mb-0 text-muted justify-content-end"></p>
+      </footer>
+    </div>
+    <!-- QR Code Modal -->
+    <div class="modal fade" id="qrcode" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">QR Code</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body qrcode" id="qrcode-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Password Modal -->
+    <div class="modal fade" id="password" tabindex="-2" data-bs-backdrop="static" data-bs-keyboard="false" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="password-title">Enter your Backup Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="password-form" action="javascript:void(0);">
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="decryption-password" name="Password">
+                  <button type="button" class="btn btn-outline-secondary" onclick="show(this)"><i class="bi bi-eye-slash"></i></button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="paste(this)"><i class="bi bi-clipboard-fill"></i></button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="password-cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="password-submit" type="button" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Settings modal -->
+    <div class="modal fade" id="settings" tabindex="-3">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="settings-title">Settings</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body settings">
+            <form action="javascript:void(0);">
+              <div class="mb-3">
+                <label class="form-label">Auto-save Backup</label>
+                <select class="form-select" id="settings-backup">
+                  <option value="false" selected>False (Default)</option>
+                  <option value="true">True</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Dark Mode</label>
+                <select class="form-select" id="settings-darkmode">
+                  <option value="false" selected>False (Default)</option>
+                  <option value="true">True</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="resetSettings()">Reset</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="applySettings()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap Script (Used for Modal) -->
+    <script src="./js/bootstrap.min.js"></script>
+    <!-- kjua (QR Code library) -->
+    <script src="./js/kjua.min.js"></script>
+    <!-- zxcvbn (Password Strength) -->
+    <script src="./js/zxcvbn.js"></script>
+    <!-- bip39Org -->
+    <script src="./js/bip39-org.js"></script>
+    <!-- DOM -->
+    <script src="./js/frontend.js"></script>
+    <!-- Version -->
+    <script src="./js/version.js"></script>
+  </body>
+</html>
