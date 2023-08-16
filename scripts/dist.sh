@@ -20,6 +20,7 @@ mv ${PACKAGE_NAME}-linux ${CLI_NAME} && tar -czvf ${CLI_NAME}-${PACKAGE_VERSION}
 mv ${PACKAGE_NAME}-macos ${CLI_NAME} && tar -czvf ${CLI_NAME}-${PACKAGE_VERSION}-darwin64.tar.gz ${CLI_NAME} && rm ${CLI_NAME}
 mv ${PACKAGE_NAME}-win.exe ${CLI_NAME}.exe && zip ${CLI_NAME}-${PACKAGE_VERSION}-win64.zip ${CLI_NAME}.exe && rm ${CLI_NAME}.exe
 cp index.html bip39-org.html
+./../scripts/bip39-tool.sh
 sha256sum * > SHA256SUMS
 
 if [[ ! -v GITHUB_ACTIONS ]]; then
