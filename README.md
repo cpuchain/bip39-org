@@ -10,6 +10,8 @@ https://bip39.org
 
 https://bip39org.eth.link (Or, https://bip39org.eth.limo)
 
+https://bip39-org.ipns.cf-ipfs.com
+
 ## Standalone offline version
 
 ### For browser version
@@ -46,7 +48,7 @@ Requirements:
   $ npm run build
 ```
 
-# Credits
+## Credits
 
 The BIP39 implementation of this module is inspired and forked from the following projects:
 
@@ -57,7 +59,7 @@ The BIP39 implementation of this module is inspired and forked from the followin
 
 The Email Password entropy generation is inspired by [Coinb.in](https://github.com/OutCast3k/coinbin/) project.
 
-# License
+## License
 
 This Bip39-org tool is released under the terms of the MIT license. See LICENSE for
 more information or see https://opensource.org/licenses/MIT.
