@@ -12,6 +12,19 @@ https://bip39org.eth.link (Or, https://bip39org.eth.limo)
 
 https://bip39-org.ipns.cf-ipfs.com
 
+### Verifying the online version
+
+```bash
+wget https://bip39.org/index.html && \
+wget https://bip39.org/SHA256SUMS.asc
+
+# Verify the SHA256SUMS file first
+gpg --verify SHA256SUMS.asc
+
+# Verify files
+sha256sum --ignore-missing --check SHA256SUMS.asc
+```
+
 ## Standalone offline version
 
 ### For browser version
