@@ -2,6 +2,8 @@
 
 A tool to create a secure BIP39 Mnemonic phrases from the combination of ID and Password
 
+https://bitcointalk.org/index.php?topic=5463580.0
+
 ## Online Version
 
 https://bip39.org
@@ -44,6 +46,22 @@ Requirements:
   $ npm run build
 ```
 
+# Credits
+
+The BIP39 implementation of this module is inspired and forked from the following projects:
+
+- [bitcoinjs/bip39](https://github.com/bitcoinjs/bip39)
+- [paulmillr/scure-bip39](https://github.com/paulmillr/scure-bip39)
+- [iancoleman/bip39](https://github.com/iancoleman/bip39)
+- [hujiulong/web-bip39](https://github.com/hujiulong/web-bip39)
+
+The Email Password entropy generation is inspired by [Coinb.in](https://github.com/OutCast3k/coinbin/) project.
+
+# License
+
+This Bip39-org tool is released under the terms of the MIT license. See LICENSE for
+more information or see https://opensource.org/licenses/MIT.
+
 ## Donations
 
 - BTC:
@@ -75,19 +93,3 @@ D7pFTmu95xnQg78XCrYCA4ViDX5GWfvGNJ
 ```
 473ZSSmehSRLvYPwforvjJN964Edy1uefhucvzT3VGB8KNGkm5H8vufYQFpWTPG94DAjSzsKftSnZB79hjcCXpQwE4G29TC
 ```
-
-# License
-
-This Bip39-org tool is released under the terms of the MIT license. See LICENSE for
-more information or see https://opensource.org/licenses/MIT.
-
-# Credits
-
-The BIP39 implementation of this module is inspired and forked from the following projects:
-
-- [bitcoinjs/bip39](https://github.com/bitcoinjs/bip39)
-- [paulmillr/scure-bip39](https://github.com/paulmillr/scure-bip39)
-- [iancoleman/bip39](https://github.com/iancoleman/bip39)
-- [hujiulong/web-bip39](https://github.com/hujiulong/web-bip39)
-
-The Email Password entropy generation is inspired by [Coinb.in](https://github.com/OutCast3k/coinbin/) project.
