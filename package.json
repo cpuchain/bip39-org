@@ -2,89 +2,17 @@
   "name": "bip39-org",
   "version": "1.0.0",
   "description": "Generate a secure BIP39 Mnemonic phrases from the combination of ID and Password",
-  "main": "./src/index.js",
-  "bin": {
-    "bip39-cli": "./src/cli.js"
-  },
+  "main": "index.js",
   "scripts": {
-    "lint": "eslint ./src/**/*.{js,jsx} && eslint ./scripts/**/*.{js,jsx}",
-    "lint:fix": "eslint ./src/**/*.{js,jsx} --fix && eslint ./scripts/**/*.{js,jsx} --fix",
-    "sync-wordlist": "node ./scripts/wordlist.js && npm run lint:fix",
-    "sync-deps": "node ./scripts/deps.js && node ./scripts/fonts.js",
-    "version": "node ./scripts/version.js",
-    "start": "node ./src/cli.js",
-    "build:node": "pkg -d --no-native-build --no-signature --no-bytecode -c ./package.json ./src/cli.js",
-    "build:web": "html-inline-external --src ./src/index.html --dest ./dist/index.html",
-    "build": "npm run version && npm run build:node && npm run build:web",
-    "dist": "npm run build && ./scripts/dist.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "update": "./scripts/bip39-tool.sh",
+    "lint": "eslint index.html",
+    "build": "html-inline-external --src index.html --dest bip39.html"
   },
-  "author": "Bip39 Org <info@bip39.org>",
-  "homepage": "https://github.com/bip39org/bip39-org",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bip39org/bip39-org.git"
-  },
-  "bugs": {
-    "url": "https://github.com/bip39org/bip39-org/issues"
-  },
-  "funding": "https://github.com/bip39org/bip39-org/#donations",
+  "author": "CPUchain <info@cpuchain.org>",
   "license": "MIT",
-  "keywords": [
-    "bip39",
-    "mnemonic",
-    "phrase",
-    "bip-39",
-    "wordlist",
-    "bitcoin",
-    "ethereum",
-    "crypto",
-    "webcrypto",
-    "brainwallet"
-  ],
-  "files": [
-    ".github",
-    "scripts",
-    "src",
-    ".eslintignore",
-    ".eslintrc.js",
-    ".gitignore",
-    ".gitmodules",
-    "bip39org.asc",
-    "example_nodejs.js",
-    "frontend.json",
-    "LICENSE",
-    "README.md"
-  ],
-  "target": "node18",
-  "pkg": {
-    "scripts": "src/**/*.js",
-    "assets": "views/**/*",
-    "targets": [
-      "node18.15.0-linux-x64",
-      "node18.15.0-macos-x64",
-      "node18.15.0-win-x64"
-    ],
-    "outputPath": "dist"
-  },
-  "dependencies": {
-    "chalk": "4.1.2",
-    "commander": "11.0.0",
-    "pkg-fetch": "3.5.2",
-    "zxcvbn": "4.4.2"
-  },
   "devDependencies": {
-    "bip39": "3.1.0",
-    "bootstrap": "5.3.1",
-    "bootstrap-icons": "1.10.5",
-    "eslint": "8.47.0",
-    "html-inline-external": "1.0.10",
-    "kjua": "0.9.0",
-    "pkg": "5.8.1"
-  },
-  "overrides": {
-    "pkg": {
-      "pkg-fetch": "3.5.2"
-    }
+    "@cpuchain/html-inline-external": "^1.0.10",
+    "eslint": "8.57.0",
+    "eslint-plugin-html": "^8.1.1"
   }
 }

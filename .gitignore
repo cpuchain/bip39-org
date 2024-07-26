@@ -1,7 +1,1 @@
 node_modules
-package-lock.json
-yarn.lock
-backup.json
-dist
-*.zip
-RELEASE_NOTE.md
